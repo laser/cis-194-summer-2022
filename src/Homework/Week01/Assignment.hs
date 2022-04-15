@@ -18,11 +18,12 @@ doubleEveryOther xs = snd $ foldr (\item (bit, acc) -> if not bit then (True, it
 
 -- #3
 sumDigits :: [Integer] -> Integer
-sumDigits = undefined
+sumDigits = foldr ((+) . sum . toDigits) 0
 
 -- #4
 validate :: Integer -> Bool
-validate = undefined
+validate n = let x = sumDigits $ doubleEveryOther $ toDigits n
+             in x `rem` 10 == 0
 
 -- #5
 type Peg = String
