@@ -37,18 +37,18 @@ insert m1@(LogMessage _ ts1 _) (Node lt m2@(LogMessage _ ts2 _) rt) =
 
 -- #3
 build :: [LogMessage] -> MessageTree
-build = foldl (flip insert) Leaf
+build x = foldl (\acc item -> insert item acc) Leaf x
 
 -- #4
 inOrder :: MessageTree -> [LogMessage]
 inOrder Leaf = []
-inOrder (Node lt m rt) = (inOrder lt) ++ [m] ++ (inOrder rt)
+inOrder (Node lt m rt) = inOrder lt ++ [m] ++ inOrder rt
 
 -- #5
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong = foldr k [] . inOrder . build
-  where k (LogMessage (Error n) _ s) acc = if n > 49 then s:acc else acc
-        k _ acc = acc
+whatWentWrong = foldr f [] . inOrder . build 
+  where f (LogMessage (Error n) _ s) acc = if n > 49 then s:acc else acc
+        f _ acc = acc
 
 readTheLogAndReport :: FilePath -> IO [String]
 readTheLogAndReport = fmap (whatWentWrong . parse) . readFile
