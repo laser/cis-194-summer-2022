@@ -48,7 +48,7 @@ ex6 = error "wat"
 
 -- #7
 ex7 :: (a -> a) -> a -> a
-ex7 f x = f x
+ex7 f = f
 
 -- #8
 ex8 :: [a] -> [a]
