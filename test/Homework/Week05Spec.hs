@@ -7,6 +7,8 @@ import           Test.Hspec
 import           Test.QuickCheck
 
 import           Homework.Week05.Assignment
+import Homework.Week05.ExprT
+
 
 main :: IO ()
 main = hspec spec

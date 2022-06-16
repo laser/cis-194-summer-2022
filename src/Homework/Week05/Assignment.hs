@@ -1,11 +1,4 @@
-module Homework.Week05.Assignment (
-  eval,
-  evalStr,
-  ExprT(..),
-  Expr(..),
-  MinMax(..),
-  Mod7(..)
-) where
+module Homework.Week05.Assignment where
 
 import Homework.Week05.ExprT
 import Homework.Week05.Parser
@@ -23,7 +16,7 @@ eval e1 = case e1 of
 -- maybe get an integer from its evaluation
 -- e.g. evalStr "1+5*2" == 12
 evalStr :: String -> Maybe Integer
-evalStr s = case (parseExp Lit Add Mul s) of
+evalStr s = case parseExp Lit Add Mul s of
   Nothing -> Nothing
   (Just e) -> Just (eval e)
 
