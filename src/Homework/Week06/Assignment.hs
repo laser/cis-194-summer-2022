@@ -127,7 +127,7 @@ interleaveStreams :: Stream a -> Stream a -> Stream a
 interleaveStreams (Cons x1 s1) (Cons x2 s2) = Cons x1 $ Cons x2 $ interleaveStreams s1 s2
 
 ruler :: Stream Integer
-ruler = interleaveStreams (streamRepeat 0) (streamMap highestPowOfTwoThatDivsEvenly $ streamFromSeed (+2) 2)
+ruler = interleaveStreams (streamRepeat 0) (streamMap highestPowOfTwoThatDivsEvenly (streamFromSeed (+2) 2))
 
 highestPowOfTwoThatDivsEvenly :: Integer -> Integer
 highestPowOfTwoThatDivsEvenly n = go 1
