@@ -1,5 +1,4 @@
 module Homework.Week08.Assignment (
-  first,
   abParser,
   abParser_,
   intPair,
@@ -16,15 +15,8 @@ import Data.Char (isUpper)
 
 -- Ex. 1 - implement a Functor instance for Parser
 
-first :: (a -> b) -> (a, c) -> (b, c)
-first f (x, y) = (f x, y)
-
 instance Functor Parser where
-  fmap f1 p = Parser f2
-    where
-      f2 xs = case runParser p xs of
-        Nothing  -> Nothing
-        (Just v) -> Just $ first f1 v
+  fmap f p = Parser $ \s -> fmap (\(x, y) -> (f x, y)) (runParser p $ s)
 
 -- Ex. 2 - implement an Applicative instance for Parser
 --
@@ -50,7 +42,7 @@ instance Applicative Parser where
 -- characters ’a’ and ’b’ and returns them as a pair
 
 abParser :: Parser (Char, Char)
-abParser = (\x y -> (x, y)) <$> char 'a' <*> char 'b'
+abParser = (,) <$> char 'a' <*> char 'b'
 
 -- Ex. 3b - Create a parser which acts in the same way as
 -- abParser but returns () instead of 'a' and 'b'
@@ -62,8 +54,8 @@ abParser_ = (\x y -> ()) <$> char 'a' <*> char 'b'
 -- list. You should use the provided posInt to parse the
 -- integer values.
 
-intPair :: Parser ([Integer])
-intPair = (\x y z -> x:z:[]) <$> posInt <*> char ' ' <*> posInt
+intPair :: Parser [Integer]
+intPair = (\x y z -> [x, z]) <$> posInt <*> char ' ' <*> posInt
 
 -- Ex. 4 - Write an Alternative instance for Parser
 --
@@ -92,4 +84,4 @@ instance Alternative Parser where
 -- character, and fails otherwise.
 
 intOrUppercase :: Parser ()
-intOrUppercase = const () <$> satisfy isUpper <|> const () <$> posInt
+intOrUppercase = () <$ satisfy isUpper <|> () <$ posInt
