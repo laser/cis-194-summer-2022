@@ -38,7 +38,7 @@ zeroOrMore p = oneOrMore p <|> pure []
 -- more whitespace characters.
 
 spaces :: Parser String
-spaces = many $ (char ' ' <|> char '\n' <|> char '\t' <|> char '\r')
+spaces = many (char ' ' <|> char '\n' <|> char '\t' <|> char '\r')
 
 -- Next, ident should parse an identifier, which for our
 -- purposes will be an alphabetic character (use isAlpha)
@@ -46,7 +46,7 @@ spaces = many $ (char ' ' <|> char '\n' <|> char '\t' <|> char '\r')
 -- isAlphaNum).
 
 ident :: Parser String
-ident = (:) <$> (satisfy isAlpha) <*> many (satisfy isAlphaNum)
+ident = (:) <$> satisfy isAlpha <*> many (satisfy isAlphaNum)
 
 ------------------------------------------------------------
 --  3. Parsing S-expressions
@@ -81,14 +81,14 @@ data SExpr = A Atom
 --  (   lots  of   (  spaces   in  )  this ( one ) )
 
 parseAtom :: Parser Atom
-parseAtom = (pure (N) <*> posInt) <|> (pure (I) <*> ident)
+parseAtom = N <$> posInt <|> I <$> ident
 
 parseSExpr :: Parser SExpr
 parseSExpr = spaces *> parse <* spaces
-  where parse = pure (A) <*> parseAtom <|> (pure (Comb) <*> (char '(' *> some parseSExpr <* char ')'))
+  where parse = A <$> parseAtom <|> Comb <$> (char '(' *> some parseSExpr <* char ')')
 
 sumParse :: Parser Integer
 sumParse = spaces *> (hit <|> miss) <* spaces
   where
     hit  = posInt
-    miss = foldl1 (+) <$> (char '(' *> some sumParse <* char ')')
+    miss = sum <$> (char '(' *> some sumParse <* char ')')
