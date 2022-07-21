@@ -38,7 +38,7 @@ zeroOrMore p = oneOrMore p <|> pure []
 -- more whitespace characters.
 
 spaces :: Parser String
-spaces = many (char ' ' <|> char '\n' <|> char '\t' <|> char '\r')
+spaces = zeroOrMore (char ' ' <|> char '\n' <|> char '\t' <|> char '\r')
 
 -- Next, ident should parse an identifier, which for our
 -- purposes will be an alphabetic character (use isAlpha)
@@ -46,7 +46,7 @@ spaces = many (char ' ' <|> char '\n' <|> char '\t' <|> char '\r')
 -- isAlphaNum).
 
 ident :: Parser String
-ident = (:) <$> satisfy isAlpha <*> many (satisfy isAlphaNum)
+ident = (:) <$> satisfy isAlpha <*> zeroOrMore (satisfy isAlphaNum)
 
 ------------------------------------------------------------
 --  3. Parsing S-expressions
