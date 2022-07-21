@@ -78,5 +78,6 @@ test-suite cis194-test
                      , Homework.Week07Spec
                      , Homework.Week08Spec
                      , Homework.Week09Spec
+                     , Homework.Week10Spec
                      , Homework.Week11Spec
                      , Homework.Week12Spec
