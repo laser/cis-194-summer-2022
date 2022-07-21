@@ -1,10 +1,12 @@
 module Homework.Week10.Assignment where
 
 import Homework.Week10.Support (Tree(..), labelTree)
+import Test.QuickCheck
 
 -- Exercise 1
 
--- instance Arbitrary a => Arbitrary (Tree a) where
+instance Arbitrary a => Arbitrary (Tree a) where
+    arbitrary = undefined
 
 -- Exercise 2
 
